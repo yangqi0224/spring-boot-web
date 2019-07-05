@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smsm.mapper.MessageMapper">
+  <resultMap id="BaseResultMap" type="com.smsm.model.Message">
+    <id column="M_id" jdbcType="VARCHAR" property="mId" />
+    <result column="M_status" jdbcType="BIT" property="mStatus" />
+    <result column="M_time" jdbcType="TIMESTAMP" property="mTime" />
+    <result column="M_from_user_id" jdbcType="VARCHAR" property="mFromUserId" />
+    <result column="M_to_user_id" jdbcType="VARCHAR" property="mToUserId" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.smsm.model.Message">
+    <result column="M_content" jdbcType="LONGVARCHAR" property="mContent" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    M_id, M_status, M_time, M_from_user_id, M_to_user_id
+  </sql>
+  <sql id="Blob_Column_List">
+    M_content
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.smsm.model.MessageExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from message
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.smsm.model.MessageExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from message
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from message
+    where M_id = #{mId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from message
+    where M_id = #{mId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.smsm.model.MessageExample">
+    delete from message
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.smsm.model.Message">
+    insert into message (M_id, M_status, M_time, 
+      M_from_user_id, M_to_user_id, M_content
+      )
+    values (#{mId,jdbcType=VARCHAR}, #{mStatus,jdbcType=BIT}, #{mTime,jdbcType=TIMESTAMP}, 
+      #{mFromUserId,jdbcType=VARCHAR}, #{mToUserId,jdbcType=VARCHAR}, #{mContent,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.smsm.model.Message">
+    insert into message
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="mId != null">
+        M_id,
+      </if>
+      <if test="mStatus != null">
+        M_status,
+      </if>
+      <if test="mTime != null">
+        M_time,
+      </if>
+      <if test="mFromUserId != null">
+        M_from_user_id,
+      </if>
+      <if test="mToUserId != null">
+        M_to_user_id,
+      </if>
+      <if test="mContent != null">
+        M_content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="mId != null">
+        #{mId,jdbcType=VARCHAR},
+      </if>
+      <if test="mStatus != null">
+        #{mStatus,jdbcType=BIT},
+      </if>
+      <if test="mTime != null">
+        #{mTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mFromUserId != null">
+        #{mFromUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="mToUserId != null">
+        #{mToUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="mContent != null">
+        #{mContent,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.smsm.model.MessageExample" resultType="java.lang.Long">
+    select count(*) from message
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update message
+    <set>
+      <if test="record.mId != null">
+        M_id = #{record.mId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mStatus != null">
+        M_status = #{record.mStatus,jdbcType=BIT},
+      </if>
+      <if test="record.mTime != null">
+        M_time = #{record.mTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.mFromUserId != null">
+        M_from_user_id = #{record.mFromUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mToUserId != null">
+        M_to_user_id = #{record.mToUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mContent != null">
+        M_content = #{record.mContent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update message
+    set M_id = #{record.mId,jdbcType=VARCHAR},
+    M_status = #{record.mStatus,jdbcType=BIT},
+    M_time = #{record.mTime,jdbcType=TIMESTAMP},
+    M_from_user_id = #{record.mFromUserId,jdbcType=VARCHAR},
+    M_to_user_id = #{record.mToUserId,jdbcType=VARCHAR},
+    M_content = #{record.mContent,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update message
+    set M_id = #{record.mId,jdbcType=VARCHAR},
+    M_status = #{record.mStatus,jdbcType=BIT},
+    M_time = #{record.mTime,jdbcType=TIMESTAMP},
+    M_from_user_id = #{record.mFromUserId,jdbcType=VARCHAR},
+    M_to_user_id = #{record.mToUserId,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.smsm.model.Message">
+    update message
+    <set>
+      <if test="mStatus != null">
+        M_status = #{mStatus,jdbcType=BIT},
+      </if>
+      <if test="mTime != null">
+        M_time = #{mTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mFromUserId != null">
+        M_from_user_id = #{mFromUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="mToUserId != null">
+        M_to_user_id = #{mToUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="mContent != null">
+        M_content = #{mContent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where M_id = #{mId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.smsm.model.Message">
+    update message
+    set M_status = #{mStatus,jdbcType=BIT},
+      M_time = #{mTime,jdbcType=TIMESTAMP},
+      M_from_user_id = #{mFromUserId,jdbcType=VARCHAR},
+      M_to_user_id = #{mToUserId,jdbcType=VARCHAR},
+      M_content = #{mContent,jdbcType=LONGVARCHAR}
+    where M_id = #{mId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.smsm.model.Message">
+    update message
+    set M_status = #{mStatus,jdbcType=BIT},
+      M_time = #{mTime,jdbcType=TIMESTAMP},
+      M_from_user_id = #{mFromUserId,jdbcType=VARCHAR},
+      M_to_user_id = #{mToUserId,jdbcType=VARCHAR}
+    where M_id = #{mId,jdbcType=VARCHAR}
+  </update>
+</mapper>

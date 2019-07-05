@@ -1,0 +1,22 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<div class="sidebar">
+    <a class="btn_create" href="/toCompany/createRec">发布新职位</a>
+    <dl class="company_center_aside">
+        <dt>我收到的简历</dt>
+        <dd>
+            <a href="/toCompany/viewRes?recruitmentId=all&state=0" class="r0">待处理简历</a>
+        </dd>
+        <dd>
+            <a href="/toCompany/viewRes?recruitmentId=all&state=1" class="r1">已通知面试简历</a>
+        </dd>
+        <dd>
+            <a href="/toCompany/viewRes?recruitmentId=all&state=2" class="r2">不合适简历</a>
+        </dd>
+    </dl>
+    <dl class="company_center_aside">
+        <dt>我发布的职位</dt>
+        <dd>
+            <a href="/company/recView?state=0" class="t0">有效职位</a>
+        </dd>
+    </dl>
+</div><!-- end .sidebar -->

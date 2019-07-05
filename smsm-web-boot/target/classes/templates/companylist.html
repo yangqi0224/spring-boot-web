@@ -1,0 +1,86 @@
+﻿<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="head :: header">
+</head>
+<body>
+<div id="body">
+    <div th:replace="nav">
+
+    </div>
+    <div id="container">
+
+        <div class="clearfix">
+            <div class="content_l">
+                <form id="companyListForm" name="companyListForm" method="get" action="/company/findCompany">
+                    <ul class="hc_list reset" >
+                        <li th:each="company,stat : ${list}" style="height: 400px">
+                            <a href="/company/findCompany" target="_blank">
+                                <h3 th:title="${company.companyName}" th:text="${company.companyName}"></h3>
+                                <div class="comLogo">
+                                    <img th:src="@{/style/images/logo_default.png}" width="190" height="190" alt="CCIC"/>
+                                    <ul>
+                                        <li th:text="${company.companyField}"></li>
+                                        <li th:text="${company.companyLocation}"></li>
+                                    </ul>
+                                </div>
+                            </a>
+                            <span th:each="recruit,stat : ${company.recruitments}" th:if="${stat.count}<=3">
+                                <a th:href="@{/company/findJob(createTime=${recruit.recruitmentId})}" target="_blank" th:text="${recruit.jobName}"> </a>
+                            </span>
+
+                            <ul class="reset ctags">
+                                <li>D轮及以上</li>
+                                <li>安全</li>
+                                <li>年终分红</li>
+                                <li>绩效奖金</li>
+                                <li>五险一金</li>
+                                <li>交通补助</li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <div class="Pagination"></div>
+                </form>
+            </div>
+            <div class="content_r">
+                <div class="greybg qrcode mt20">
+                    <img src="style/images/companylist_qr.png" width="242" height="242" alt="拉勾微信公众号二维码"/>
+                    <span class="c7">扫描拉勾二维码，微信轻松搜工作</span>
+                </div>
+                <!-- <a href="h/speed/speed3.html" target="_blank" class="adSpeed"></a> -->
+                <a href="h/subject/jobguide.html" target="_blank" class="eventAd">
+                    <img src="style/images/subject280.jpg" width="280" height="135"/>
+                </a>
+                <a href="h/subject/risingPrice.html" target="_blank" class="eventAd">
+                    <img src="style/images/rising280.png" width="280" height="135"/>
+                </a>
+            </div>
+        </div>
+
+        <input type="hidden" value="" name="userid" id="userid"/>
+
+        <script type="text/javascript" th:src="@{style/js/company_list.min.js}"></script>
+        <script>
+            $(function () {
+                /*分页 */
+                $('.Pagination').pager({
+                    currPage: 1,
+                    pageNOName: "pn",
+                    form: "companyListForm",
+                    pageCount: 20,
+                    pageSize: 5
+                });
+            })
+        </script>
+        <div class="clear"></div>
+        <input type="hidden" id="resubmitToken" value=""/>
+        <a id="backtop" title="回到顶部" rel="nofollow"></a>
+    </div><!-- end #container -->
+    <script th:inline="javascript">
+        $(function () {
+            $("#company").addClass("current");
+        })
+    </script>
+</div><!-- end #body -->
+</body>
+</html>

@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smsm.mapper.RecruitmentMapper">
+  <resultMap id="BaseResultMap" type="com.smsm.model.Recruitment">
+    <id column="recruitment_id" jdbcType="VARCHAR" property="recruitmentId"/>
+    <result column="job_id" jdbcType="VARCHAR" property="jobId" />
+    <result column="company_id" jdbcType="VARCHAR" property="companyId" />
+    <result column="job_name" jdbcType="VARCHAR" property="jobName" />
+    <result column="job_salary" jdbcType="VARCHAR" property="jobSalary" />
+    <result column="exception_education" jdbcType="CHAR" property="exceptionEducation" />
+    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+    <result column="job_condition" jdbcType="VARCHAR" property="jobCondition" />
+    <result column="job_desc" jdbcType="VARCHAR" property="jobDesc"/>
+    <result column="job_tempt" jdbcType="VARCHAR" property="jobTempt"/>
+    <result column="job_year" jdbcType="VARCHAR" property="jobYear"/>
+    <result column="job_city" jdbcType="VARCHAR" property="jobCity" />
+    <result column="job_pro" jdbcType="VARCHAR" property="jobPro"/>
+    <result column="job_addr" jdbcType="VARCHAR" property="jobAddr"/>
+    <result column="hr_name" jdbcType="VARCHAR" property="hrName"/>
+    <result column="salary_max" jdbcType="INTEGER" property="salaryMax"/>
+    <result column="salary_min" jdbcType="INTEGER" property="salaryMin"/>
+    <result column="state" jdbcType="INTEGER" property="state"/>
+  </resultMap>
+
+  <resultMap id="company_recruitment" type="com.smsm.model.Company_Recruitment">
+    <result column="job_id" jdbcType="VARCHAR" property="jobId" />
+    <result column="company_id" jdbcType="VARCHAR" property="companyId" />
+    <result column="job_name" jdbcType="VARCHAR" property="jobName" />
+    <result column="job_salary" jdbcType="INTEGER" property="jobSalary" />
+    <result column="exception_education" jdbcType="CHAR" property="exceptionEducation" />
+    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+    <result column="job_condition" jdbcType="VARCHAR" property="jobCondition" />
+    <result column="company_name" jdbcType="VARCHAR" property="companyName" />
+    <result column="company_location" jdbcType="VARCHAR" property="companyLocation" />
+    <result column="job_desc" jdbcType="VARCHAR" property="jobDesc"/>
+    <result column="job_tempt" jdbcType="VARCHAR" property="jobTempt"/>
+    <result column="job_year" jdbcType="INTEGER" property="jobYear"/>
+    <result column="job_city" jdbcType="VARCHAR" property="jobCity" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    job_id, company_id, job_name, job_salary, exception_education
+  </sql>
+  <select id="selectByExample" parameterType="com.smsm.model.RecruitmentExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from recruitment
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.smsm.model.RecruitmentExample">
+    delete from recruitment
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.smsm.model.Recruitment">
+    insert into recruitment (job_id, company_id, job_name,
+      job_salary, exception_education)
+    values (#{jobId,jdbcType=VARCHAR}, #{companyId,jdbcType=VARCHAR}, #{jobName,jdbcType=VARCHAR},
+      #{jobSalary,jdbcType=INTEGER}, #{exceptionEducation,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.smsm.model.Recruitment">
+    insert into recruitment
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="jobId != null">
+        job_id,
+      </if>
+      <if test="companyId != null">
+        company_id,
+      </if>
+      <if test="jobName != null">
+        job_name,
+      </if>
+      <if test="jobSalary != null">
+        job_salary,
+      </if>
+      <if test="exceptionEducation != null">
+        exception_education,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="jobId != null">
+        #{jobId,jdbcType=VARCHAR},
+      </if>
+      <if test="companyId != null">
+        #{companyId,jdbcType=VARCHAR},
+      </if>
+      <if test="jobName != null">
+        #{jobName,jdbcType=VARCHAR},
+      </if>
+      <if test="jobSalary != null">
+        #{jobSalary,jdbcType=INTEGER},
+      </if>
+      <if test="exceptionEducation != null">
+        #{exceptionEducation,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.smsm.model.RecruitmentExample" resultType="java.lang.Long">
+    select count(*) from recruitment
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update recruitment
+    <set>
+      <if test="record.jobId != null">
+        job_id = #{record.jobId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.companyId != null">
+        company_id = #{record.companyId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.jobName != null">
+        job_name = #{record.jobName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.jobSalary != null">
+        job_salary = #{record.jobSalary,jdbcType=INTEGER},
+      </if>
+      <if test="record.exceptionEducation != null">
+        exception_education = #{record.exceptionEducation,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update recruitment
+    set job_id = #{record.jobId,jdbcType=VARCHAR},
+    company_id = #{record.companyId,jdbcType=VARCHAR},
+    job_name = #{record.jobName,jdbcType=VARCHAR},
+    job_salary = #{record.jobSalary,jdbcType=INTEGER},
+    exception_education = #{record.exceptionEducation,jdbcType=CHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+
+  <!-- 插入一条招聘信息 -->
+  <insert id="insertRecruit" parameterType="com.smsm.model.Recruitment">
+  		INSERT into recruitment VALUES
+		((select get_trans_num()),
+		(select job_id from job where job_name = #{jobName}),
+		#{companyId},
+		#{jobName},
+		#{jobSalary},
+		#{exceptionEducation},
+		NOW(),
+		#{jobCondition},
+		#{jobPro},
+		#{jobCity},
+		#{jobYear},
+		#{jobTempt},
+		#{jobDesc},
+		#{jobAddr},
+		(select user_name from user where user_phone = (select user_phone from company where company_id=#{companyId})),
+		#{salaryMax},
+		#{salaryMin},
+		null)
+  </insert>
+
+  <!-- 查询招聘信息 -->
+  <select id="SelectRecruitment" resultMap="company_recruitment">
+    select r.job_id,r.company_id,r.job_name,r.job_salary,r.exception_education,r.create_time,r.job_condition,c.company_name,c.company_location
+    from recruitment r,company c
+    where r.company_id = c.company_id
+   </select>
+
+  <!-- 查询最新的招聘信息 -->
+  <select id="SelectRecruitByTime" resultMap="company_recruitment">
+    select r.job_id,r.company_id,r.job_name,r.job_salary,r.exception_education,r.create_time,r.job_condition,c.company_name,c.company_location
+    from recruitment r,company c
+    where r.company_id = c.company_id
+    order by r.create_time DESC
+  </select>
+
+  <!-- 查询指定工作的招聘信息 -->
+  <select id="SelectRecruitByJobName" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select *
+    from recruitment r
+    where r.job_name like '%${jobName}%'
+  </select>
+
+  <!-- 通过公司名称查询招聘信息 -->
+  <select id="SelectRecruitByCompanyName"  resultMap="company_recruitment">
+    select r.job_id,r.company_id,r.job_name,r.job_salary,r.exception_education,r.create_time,r.job_condition,c.company_name,c.company_location
+    from recruitment r,company c
+    where r.company_id = c.company_id  and c.company_name like '%${companyName}%'
+    order by r.create_time desc
+  </select>
+
+  <!-- 查询热聘职位 -->
+  <select id="selectHotJob" resultType="com.smsm.model.Job">
+
+  	select job_name jobName,count(job_name) jobNum
+  	from recruitment
+  	GROUP BY job_name
+	ORDER BY jobNum DESC
+  </select>
+
+  <!-- 查找job表中的所有岗位 -->
+  <select id="selectAllJob" resultType="com.smsm.model.Job">
+
+  	select job_id jobId,job_name jobName,job_type jobType
+  	from job
+  </select>
+
+  <select id="selectRecruitById" resultMap="company_recruitment" parameterType="java.lang.String">
+    select *
+    from recruitment r,company c
+    where r.company_id = c.company_id and r.create_time=#{createTime}
+  </select>
+
+  <select id="selectRecByCompanyId" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select *
+    from recruitment
+    where company_id = #{companyId}
+  </select>
+  <select id="selectRecById" parameterType="java.lang.String" resultMap="BaseResultMap">
+      select *
+      from recruitment
+      where recruitment_id = #{id}
+  </select>
+
+  <select id="selectRecByTerm" parameterType="com.smsm.model.Recruitment" resultMap="BaseResultMap">
+    select * from recruitment
+    <where>
+      <if test="recruitment.jobCity != null">
+        and job_city = #{recruitment.jobCity}
+      </if>
+      <if test="recruitment.jobSalary != null ">
+        and salary_min &gt;= #{recruitment.salaryMin} and salary_max &lt;= #{recruitment.salaryMax}
+      </if>
+      <if test="recruitment.jobName!=null">
+        and job_name like '%${recruitment.jobName}%'
+      </if>
+      <if test="recruitment.exceptionEducation != null">
+        and exception_education = #{recruitment.exceptionEducation}
+      </if>
+      <if test="recruitment.jobYear != null">
+        and job_year &lt;= #{recruitment.jobYear}
+      </if>
+    </where>
+    order by recruitment_id desc
+  </select>
+</mapper>

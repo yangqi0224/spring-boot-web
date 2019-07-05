@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="smsm-model-1.0-SNAPSHOT">
+    <CLASSES />
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/smsm-common/src/main/resources/lib/smsm-model-1.0-SNAPSHOT.jar!/" />
+    </SOURCES>
+  </library>
+</component>

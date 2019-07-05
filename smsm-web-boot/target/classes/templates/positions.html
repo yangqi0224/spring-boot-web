@@ -1,0 +1,76 @@
+﻿<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <header th:replace="head :: header"></header>
+    <script th:src="@{/style/js/job_list.min.js}" type="text/javascript"></script>
+</head>
+<body>
+<div id="body">
+    <div th:replace="nav">
+    </div><!-- end #header -->
+    <div id="container">
+        <div th:replace="left">
+        </div>
+        <div class="content">
+            <dl class="company_center_content">
+                <dt>
+                    <h1>
+                        <em></em>
+                        有效职位
+                        <span>（共<i style="color:#fff;font-style:normal" id="positionNumber">1</i>个）</span></h1>
+                </dt>
+                <dd>
+                    <form id="searchForm">
+                        <input type="hidden" value="Publish" name="type">
+                        <ul th:if="${flag==true}" class="reset my_jobs">
+                            <li th:each="c,cstate : ${list}" th:data-id="${c.recruitmentId}">
+                                <h3>
+                                    <a target="_blank" th:title="${c.jobName}" th:href="@{/company/findJob(createTime=${c.recruitmentId})}" th:text="${c.jobName}"></a>
+                                    <span th:text="${c.jobCity}">[上海]</span>
+                                </h3>
+                                <span class="receivedResumeNo"><a
+                                        th:href="@{/toCompany/viewRes(recruitmentId=${c.recruitmentId},state=3)}" th:text="${'应聘简历（'+c.num+'）'}"></a></span>
+                                <div th:text="${c.jobPro+' / '+c.jobSalary+' / '+c.jobYear+' / '+c.exceptionEducation}"></div>
+                                <div class="c9" th:text="${c.createTime}"></div>
+                            </li>
+                        </ul>
+                    </form>
+                </dd>
+            </dl>
+        </div><!-- end .content -->
+        <div class="clear"></div>
+        <a rel="nofollow" title="回到顶部" id="backtop"></a>
+    </div><!-- end #container -->
+</div><!-- end #body -->
+
+<div id="cboxOverlay" style="display: none;"></div>
+<div id="colorbox" class="" role="dialog" tabindex="-1" style="display: none;">
+    <div id="cboxWrapper">
+        <div>
+            <div id="cboxTopLeft" style="float: left;"></div>
+            <div id="cboxTopCenter" style="float: left;"></div>
+            <div id="cboxTopRight" style="float: left;"></div>
+        </div>
+        <div style="clear: left;">
+            <div id="cboxMiddleLeft" style="float: left;"></div>
+            <div id="cboxContent" style="float: left;">
+                <div id="cboxTitle" style="float: left;"></div>
+                <div id="cboxCurrent" style="float: left;"></div>
+                <button type="button" id="cboxPrevious"></button>
+                <button type="button" id="cboxNext"></button>
+                <button id="cboxSlideshow"></button>
+                <div id="cboxLoadingOverlay" style="float: left;"></div>
+                <div id="cboxLoadingGraphic" style="float: left;"></div>
+            </div>
+            <div id="cboxMiddleRight" style="float: left;"></div>
+        </div>
+        <div style="clear: left;">
+            <div id="cboxBottomLeft" style="float: left;"></div>
+            <div id="cboxBottomCenter" style="float: left;"></div>
+            <div id="cboxBottomRight" style="float: left;"></div>
+        </div>
+    </div>
+    <div style="position: absolute; width: 9999px; visibility: hidden; display: none;"></div>
+</div>
+</body>
+</html>

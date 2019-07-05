@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smsm.mapper.ToEmployMapper">
+  <resultMap id="BaseResultMap" type="com.smsm.model.ToEmploy">
+    <id column="to_employ_id" jdbcType="VARCHAR" property="toEmployId" />
+    <result column="job_seeker_id" jdbcType="VARCHAR" property="jobSeekerId" />
+    <result column="resume_id" jdbcType="VARCHAR" property="resumeId" />
+    <result column="recruitment_id" jdbcType="VARCHAR" property="recruitmentId" />
+    <result column="job_seeker_name" jdbcType="VARCHAR" property="jobSeekerName" />
+    <result column="state" jdbcType="INTEGER" property="state" />
+    <result column="to_employ_time" jdbcType="VARCHAR" property="toEmployDate"/>
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+  </resultMap>
+
+  <insert id="insertToEmployByUser" parameterType="java.lang.String">
+      insert into to_employ
+      values((select get_trans_num()),
+              (select job_seeker_id from  job_seeker where user_id = #{userId}),
+              (select resume_id from resume where job_seeker_id = (select job_seeker_id from  job_seeker where user_id = #{userId})),
+              #{recruitmentId},
+              (select job_seeker_name from job_seeker where user_id = #{userId}),
+              0,
+              NOW(),now())
+  </insert>
+
+    <select id="selectRecordByUser" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select *
+        from to_employ
+        where job_seeker_id = (select job_seeker_id from job_seeker where user_id = #{userId}) and recruitment_id = #{recruitmentId}
+    </select>
+
+    <select id="selectAllToEmployByUser" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select *
+        from to_employ
+        where job_seeker_id = (select job_seeker_id from job_seeker where user_id = #{userId})
+    </select>
+
+    <select id="findAllRecord" resultMap="BaseResultMap">
+        select *
+        from to_employ
+    </select>
+
+    <select id="selectToEmployByCompany" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select *
+        from to_employ
+        where recruitment_id in (select recruitment_id from recruitment where company_id = #{companyId})
+    </select>
+
+    <select id="selectToEmployByRec" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select *
+        from to_employ
+        where recruitment_id = #{recruitmentId}
+    </select>
+
+    <update id="updateToEmploy" parameterType="com.smsm.model.ToEmploy">
+
+        update to_employ
+        set state = #{state}
+        where to_employ_id = #{toEmployId}
+    </update>
+</mapper>

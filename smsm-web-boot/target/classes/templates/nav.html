@@ -1,0 +1,79 @@
+
+<html xmlns:th="http://www.thymeleaf.org">
+<div id="header">
+    <div class="wrapper">
+        <a href="/toCompany/toIndex" class="logo">
+            <img th:src="@{/style/images/logo.png}" width="229" height="43" alt="面向毕业生的求职网站" />
+        </a>
+        <ul class="reset" id="navheader">
+            <li id="index"><a href="/toCompany/toIndex">首页</a></li>
+            <!--<li id="company"><a href="/company/findCompany" >公司</a></li>-->
+            <span th:if="${session.user!=null}">
+            <li id="resume" th:if="${session.user.userType}==personal"><a href="/personal/resume" rel="nofollow">我的简历</a></li>
+            <li id="recruit" th:if="${session.user.userType}==company"><a href="/toCompany/createRec" rel="nofollow">发布职位</a></li>
+            </span>
+        </ul>
+        <span th:if="${session.user}==null">
+            <ul class="loginTop">
+                <li><a href="/htmls/login.html" rel="nofollow">登录</a></li>
+                <li>|</li>
+                <li><a href="/htmls/register.html" rel="nofollow">注册</a></li>
+            </ul>
+        </span>
+        <span th:if="${session.user}!=null">
+            <span th:switch="${session.user.userType}">
+            <div th:case="personal">
+                <dl class="collapsible_menu">
+                    <dt>
+                        <span th:text="${session.user.userName}">用户名</span>
+                        <span class="red dn" id="noticeDot-0"></span>
+                        <i></i>
+                    </dt>
+                    <dd><a rel="nofollow" href="/personal/resume">我的简历</a></dd>
+                    <dd><a rel="nofollow" href="/toPersonal/toResult?state=0">我投递的职位</a></dd>
+                    <dd><a href="/toLogin/toUpdatePwd">帐号设置</a></dd>
+                    <dd class="logout" id="logout"><a rel="nofollow" >退出</a></dd>
+                </dl>
+                <div class="dn" id="noticeTip">
+                    <span class="bot"></span>
+                    <span class="top"></span>
+                    <a target="_blank" href="delivery.html"><strong>0</strong>条新投递反馈</a>
+                    <a class="closeNT" href="javascript:;"></a>
+                </div>
+            </div>
+            <div th:case="company">
+                <dl class="collapsible_menu">
+                    <dt>
+                        <span th:text="${session.user.userName}">用户名</span>
+                        <span class="red dn" id="noticeDot-0"></span>
+                        <i></i>
+                    </dt>
+                    <dd><a rel="nofollow" href="/company/recView?state=2">我发布的职位</a></dd>
+                    <dd><a href="/toCompany/toMyCompany">我的公司主页</a></dd>
+                    <dd class="btm"><a href="/toCompany/viewRes?recruitmentId=all&state=3">我收到的简历</a></dd>
+                    <dd><a href="/toLogin/toUpdatePwd">帐号设置</a></dd>
+                    <dd class="logout" id="logout"><a rel="nofollow" >退出</a></dd>
+                </dl>
+            </div>
+        </span>
+        </span>
+    </div>
+    <script th:inline="javascript">
+        $(function () {
+            $("#logout").click(function () {
+                $.ajax({
+                    type:"POST",
+                    url:"/login/logout",
+                    success:function (result) {
+                        if (result.state == 10){
+                            window.location.href = "/toCompany/toIndex";
+                        } else {
+                            alert(result.msg);
+                            window.location.href = "/toCompany/toIndex";
+                        }
+                    }
+                })
+            })
+        })
+    </script>
+</div>

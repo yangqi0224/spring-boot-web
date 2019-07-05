@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smsm.mapper.JobSeekerMapper">
+  <resultMap id="BaseResultMap" type="com.smsm.model.JobSeeker">
+    <id column="job_seeker_id" jdbcType="VARCHAR" property="jobSeekerId" />
+    <result column="job_seeker_name" jdbcType="VARCHAR" property="jobSeekerName" />
+    <result column="job_seeker_sex" jdbcType="CHAR" property="jobSeekerSex" />
+    <result column="resume_num" jdbcType="INTEGER" property="resumeNum" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    job_seeker_id, job_seeker_name, job_seeker_sex, resume_num, user_id
+  </sql>
+  <select id="selectByExample" parameterType="com.smsm.model.JobSeekerExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from job_seeker
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from job_seeker
+    where job_seeker_id = #{jobSeekerId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from job_seeker
+    where job_seeker_id = #{jobSeekerId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.smsm.model.JobSeekerExample">
+    delete from job_seeker
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.smsm.model.JobSeeker">
+    insert into job_seeker (job_seeker_id, job_seeker_name, job_seeker_sex, 
+      resume_num, user_id)
+    values (#{jobSeekerId,jdbcType=VARCHAR}, #{jobSeekerName,jdbcType=VARCHAR}, #{jobSeekerSex,jdbcType=CHAR}, 
+      #{resumeNum,jdbcType=INTEGER}, #{userId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.smsm.model.JobSeeker">
+    insert into job_seeker
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="jobSeekerId != null">
+        job_seeker_id,
+      </if>
+      <if test="jobSeekerName != null">
+        job_seeker_name,
+      </if>
+      <if test="jobSeekerSex != null">
+        job_seeker_sex,
+      </if>
+      <if test="resumeNum != null">
+        resume_num,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="jobSeekerId != null">
+        #{jobSeekerId,jdbcType=VARCHAR},
+      </if>
+      <if test="jobSeekerName != null">
+        #{jobSeekerName,jdbcType=VARCHAR},
+      </if>
+      <if test="jobSeekerSex != null">
+        #{jobSeekerSex,jdbcType=CHAR},
+      </if>
+      <if test="resumeNum != null">
+        #{resumeNum,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.smsm.model.JobSeekerExample" resultType="java.lang.Long">
+    select count(*) from job_seeker
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update job_seeker
+    <set>
+      <if test="record.jobSeekerId != null">
+        job_seeker_id = #{record.jobSeekerId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.jobSeekerName != null">
+        job_seeker_name = #{record.jobSeekerName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.jobSeekerSex != null">
+        job_seeker_sex = #{record.jobSeekerSex,jdbcType=CHAR},
+      </if>
+      <if test="record.resumeNum != null">
+        resume_num = #{record.resumeNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update job_seeker
+    set job_seeker_id = #{record.jobSeekerId,jdbcType=VARCHAR},
+    job_seeker_name = #{record.jobSeekerName,jdbcType=VARCHAR},
+    job_seeker_sex = #{record.jobSeekerSex,jdbcType=CHAR},
+    resume_num = #{record.resumeNum,jdbcType=INTEGER},
+    user_id = #{record.userId,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.smsm.model.JobSeeker">
+    update job_seeker
+    <set>
+      <if test="jobSeekerName != null">
+        job_seeker_name = #{jobSeekerName,jdbcType=VARCHAR},
+      </if>
+      <if test="jobSeekerSex != null">
+        job_seeker_sex = #{jobSeekerSex,jdbcType=CHAR},
+      </if>
+      <if test="resumeNum != null">
+        resume_num = #{resumeNum,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where job_seeker_id = #{jobSeekerId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.smsm.model.JobSeeker">
+    update job_seeker
+    set job_seeker_name = #{jobSeekerName,jdbcType=VARCHAR},
+      job_seeker_sex = #{jobSeekerSex,jdbcType=CHAR},
+      resume_num = #{resumeNum,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=VARCHAR}
+    where job_seeker_id = #{jobSeekerId,jdbcType=VARCHAR}
+  </update>
+
+  <select id="selectJobSeekerByUserId" resultMap="BaseResultMap">
+  	select *
+  	from job_seeker
+  	where user_id=#{userId}
+  </select>
+
+  <insert id="insertJobSeeker" parameterType="com.smsm.model.JobSeeker" >
+  	insert into job_seeker (job_seeker_id, job_seeker_name, job_seeker_sex,
+      resume_num, user_id)
+    values ((select get_trans_num()), #{jobSeekerName,jdbcType=VARCHAR}, #{jobSeekerSex,jdbcType=CHAR},
+      #{resumeNum,jdbcType=INTEGER}, #{userId,jdbcType=VARCHAR})
+
+  </insert>
+</mapper>

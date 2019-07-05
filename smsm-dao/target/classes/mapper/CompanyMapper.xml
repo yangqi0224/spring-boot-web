@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smsm.mapper.CompanyMapper">
+  <resultMap id="BaseResultMap" type="com.smsm.model.Company">
+    <id column="company_id" jdbcType="VARCHAR" property="companyId" />
+    <result column="company_name" jdbcType="VARCHAR" property="companyName" />
+    <result column="user_phone" jdbcType="VARCHAR" property="userPhone" />
+   </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.smsm.model.Company">
+    <result column="company_location" jdbcType="VARCHAR" property="companyLocation" />
+    <result column="company_size" jdbcType="VARCHAR" property="companySize"/>
+    <result column="company_field" jdbcType="VARCHAR" property="companyField"/>
+    <result column="company_home" jdbcType="VARCHAR" property="companyHome"/>
+    <result column="company_present" jdbcType="VARCHAR" property="companyPresent"/>
+    <result column="company_tag" jdbcType="VARCHAR" property="companyTag"/>
+    <result column="company_stage" jdbcType="VARCHAR" property="companyStage"/>
+    <result column="company_merit" jdbcType="VARCHAR" property="companyMerit"/>
+    <result column="img_name" jdbcType="VARCHAR" property="imgName"/>
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    company_id, company_name, user_id
+  </sql>
+  <sql id="Blob_Column_List">
+    company_location
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.smsm.model.CompanyExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from company
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.smsm.model.CompanyExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from company
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from company
+    where company_id = #{companyId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from company
+    where company_id = #{companyId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.smsm.model.CompanyExample">
+    delete from company
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.smsm.model.Company">
+    insert into company (company_id, company_name, user_id,
+      company_location)
+    values (#{companyId,jdbcType=VARCHAR}, #{companyName,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR},
+      #{companyLocation,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertCompanyInfo" parameterType="com.smsm.model.Company">
+    insert into company
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+        company_id,
+      <if test="companyName != null">
+        company_name,
+      </if>
+      <if test="userPhone != null">
+        user_phone,
+      </if>
+      <if test="companyLocation != null">
+        company_location,
+      </if>
+      <if test="companySize != null">
+        company_size,
+      </if>
+      <if test="companyField != null">
+        company_field,
+      </if>
+      <if test="companyHome != null">
+        company_home,
+      </if>
+      <if test="companyPresent != null">
+        company_present,
+      </if>
+      <if test="companyTag != null">
+        company_tag,
+      </if>
+      <if test="companyStage != null">
+        company_stage,
+      </if>
+      <if test="companyMerit != null">
+        company_merit,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      (select get_trans_num()),
+      <if test="companyName != null">
+        #{companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="userPhone != null">
+        #{userPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="companyLocation != null">
+        #{companyLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="companySize != null">
+        #{companySize,jdbcType=VARCHAR},
+      </if>
+      <if test="companyField != null">
+        #{companyField,jdbcType=VARCHAR},
+      </if>
+      <if test="companyHome != null">
+        #{companyHome,jdbcType=VARCHAR},
+      </if>
+      <if test="companyPresent != null">
+        #{companyPresent,jdbcType=VARCHAR},
+      </if>
+      <if test="companyTag != null">
+        #{companyTag,jdbcType=VARCHAR},
+      </if>
+      <if test="companyStage != null">
+        #{companyStage,jdbcType=VARCHAR},
+      </if>
+      <if test="companyMerit != null">
+        #{companyMerit,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.smsm.model.CompanyExample" resultType="java.lang.Long">
+    select count(*) from company
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update company
+    <set>
+      <if test="record.companyId != null">
+        company_id = #{record.companyId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.companyName != null">
+        company_name = #{record.companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.companyLocation != null">
+        company_location = #{record.companyLocation,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update company
+    set company_id = #{record.companyId,jdbcType=VARCHAR},
+    company_name = #{record.companyName,jdbcType=VARCHAR},
+    user_id = #{record.userId,jdbcType=VARCHAR},
+    company_location = #{record.companyLocation,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update company
+    set company_id = #{record.companyId,jdbcType=VARCHAR},
+    company_name = #{record.companyName,jdbcType=VARCHAR},
+    user_id = #{record.userId,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.smsm.model.Company">
+    update company
+    <set>
+      <if test="companyName != null">
+        company_name = #{companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="companyLocation != null">
+        company_location = #{companyLocation,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where company_id = #{companyId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.smsm.model.Company">
+    update company
+    set company_name = #{companyName,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=VARCHAR},
+      company_location = #{companyLocation,jdbcType=VARCHAR}
+    where company_id = #{companyId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.smsm.model.Company">
+    update company
+    set company_name = #{companyName,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=VARCHAR}
+    where company_id = #{companyId,jdbcType=VARCHAR}
+  </update>
+
+  <insert id="insertSelective1" parameterType="com.smsm.model.User">
+    insert into company
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+
+      company_id,
+
+      <if test="companyName != null">
+        company_name,
+      </if>
+      <if test="userPhone != null">
+        user_Phone,
+      </if>
+      <if test="companyLocation != null">
+        company_location,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+
+      (select get_trans_num()),
+
+      <if test="companyName != null">
+        #{companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="userPhone != null">
+        #{userPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="companyLocation != null">
+        #{companyLocation,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKey1" parameterType="com.smsm.model.User">
+    update company
+    <set>
+      <if test="companyName != null">
+        company_name = #{companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="companyLocation != null">
+        company_location = #{companyLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="userPhone != null">
+        user_phone = #{userPhone,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where company_id = #{companyId,jdbcType=VARCHAR}
+  </update>
+
+  <select id="selectByPrimaryKey1" parameterType="java.lang.String" resultType="com.smsm.model.Company">
+    select
+    company_id companyId, company_name companyName, company_location companyLocation, user_id userId
+    from company
+    where userPhone = #{userPhone,jdbcType=VARCHAR}
+  </select>
+
+
+  <select id="getCompanyBuUserPhone" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+  	select *
+  	from company
+  	where user_phone = #{userPhone}
+  </select>
+
+  <select id="findAllCompany" resultMap="ResultMapWithBLOBs">
+    select *
+    from company
+
+  </select>
+
+  <update id="updateCompanyInfo" parameterType="com.smsm.model.Company">
+    update company
+    <trim prefix="set" suffixOverrides=",">
+      <if test="companyName != null">
+        company_name = #{companyName},
+      </if>
+      <if test="companyLocation != null">
+        company_location = #{companyLocation},
+      </if>
+      <if test="companySize != null">
+        company_size = #{companySize},
+      </if>
+      <if test="companyField != null">
+        company_field = #{companyField},
+      </if>
+      <if test="companyHome != null">
+        company_home = #{companyHome},
+      </if>
+      <if test="companyPresent != null">
+        company_present = #{companyPresent},
+      </if>
+      <if test="companyTag != null">
+        company_tag = #{companyTag},
+      </if>
+      <if test="companyStage != null">
+        company_stage = #{companyStage},
+      </if>
+      <if test="companyMerit != null">
+        company_merit = #{companyMerit},
+      </if>
+    </trim>
+    where company_id = #{companyId}
+  </update>
+
+  <select id="selectCompanyById" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String">
+    select *
+    from company
+    where company_id = #{companyId}
+  </select>
+
+  <update id="uploadImage" parameterType="java.lang.String">
+    update company
+    set img_name = #{imgName}
+    where user_phone = #{userPhone}
+  </update>
+</mapper>

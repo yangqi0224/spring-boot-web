@@ -1,0 +1,76 @@
+﻿<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="head :: header">
+</head>
+<body>
+<div id="body">
+	<div th:replace="nav">
+	</div>
+    <div id="container">
+        	<div class="user_bindSidebar">
+    <dl id="user_sideBarmenu" class="user_sideBarmenu">
+     	        <dt><h3>帐号设置</h3></dt>
+        <dd><a class="hover" href="javascript:void(0)">修改密码</a></dd>
+            </dl>
+</div>
+<input type="hidden" id="hasSidebar" value="1">	<div class="content user_modifyContent">
+        <dl class="c_section">
+            <dt>
+            	<h2><em></em>修改密码</h2>
+            </dt>
+            <dd>
+				<form id="updatePswForm">
+            		<table class="savePassword">
+            			<tbody><tr>
+            				<td>登录账号</td>
+            				<td class="c7" th:text="${session.user.userPhone}"></td>
+            			</tr>
+            			<tr>
+            				<td class="label">当前密码</td>
+            				<td>
+            					<input type="password" maxlength="16" id="oldpassword" name="oldpassword" >
+            					<span id="updatePwd_beError" style="display:none;" class="error">
+            				</span></td>            				
+            			</tr>
+            			<tr>
+            				<td class="label">新密码</td>
+            				<td><input type="password" maxlength="16" id="newpassword" name="newpassword" ></td>
+            			</tr>
+            			<tr>
+            				<td class="label">确认密码</td>
+            				<td><input type="password" maxlength="16" id="comfirmpassword" name="comfirmpassword" ></td>
+            			</tr>
+            			<tr>
+            				<td>&nbsp;</td>
+            				<td><input type="submit" value="保 存"></td>
+            			</tr>
+            		</tbody></table>
+				</form>
+				            </dd>
+        </dl>
+    </div>
+		<!------------------------------------- 弹窗lightbox ----------------------------------------->
+		<div style="display:none;">
+
+
+			<!-- 修改密码 -->
+			<div style="overflow:hidden" class="popup" id="updatePassword">
+				<h3>修改密码成功，请重新登录</h3>
+				<h4><span>5</span>秒后将自动退出</h4>
+				<a class="btn" href="/htmls/login.html">直接退出</a>
+			</div>
+
+		</div>
+		<!------------------------------------- end ----------------------------------------->
+		<script src="/style/js/setting.js"></script>
+			<div class="clear"></div>
+			<input type="hidden" value="" id="resubmitToken">
+	    	<a rel="nofollow" title="回到顶部" id="backtop"></a>
+	    </div><!-- end #container -->
+	</div><!-- end #body -->
+
+
+<!--  -->
+
+
+<div id="cboxOverlay" style="display: none;"></div><div id="colorbox" class="" role="dialog" tabindex="-1" style="display: none;"><div id="cboxWrapper"><div><div id="cboxTopLeft" style="float: left;"></div><div id="cboxTopCenter" style="float: left;"></div><div id="cboxTopRight" style="float: left;"></div></div><div style="clear: left;"><div id="cboxMiddleLeft" style="float: left;"></div><div id="cboxContent" style="float: left;"><div id="cboxTitle" style="float: left;"></div><div id="cboxCurrent" style="float: left;"></div><button type="button" id="cboxPrevious"></button><button type="button" id="cboxNext"></button><button id="cboxSlideshow"></button><div id="cboxLoadingOverlay" style="float: left;"></div><div id="cboxLoadingGraphic" style="float: left;"></div></div><div id="cboxMiddleRight" style="float: left;"></div></div><div style="clear: left;"><div id="cboxBottomLeft" style="float: left;"></div><div id="cboxBottomCenter" style="float: left;"></div><div id="cboxBottomRight" style="float: left;"></div></div></div><div style="position: absolute; width: 9999px; visibility: hidden; display: none;"></div></div></body></html>

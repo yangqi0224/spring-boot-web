@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="commons-codec-1.10">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/smsm-web-boot/src/main/resources/lib/commons-codec-1.10.jar!/" />
+      <root url="jar://$PROJECT_DIR$/smsm-web-boot/src/main/resources/lib/fastjson-1.2.47.jar!/" />
+      <root url="jar://$PROJECT_DIR$/smsm-web-boot/src/main/resources/lib/jcl-over-slf4j-1.7.5.jar!/" />
+      <root url="jar://$PROJECT_DIR$/smsm-web-boot/src/main/resources/lib/sequoiacm-driver-3.0.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/smsm-web-boot/src/main/resources/lib/sequoiadb-driver-jdk6-3.0.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/smsm-web-boot/src/main/resources/lib/slf4j-api-1.7.25.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

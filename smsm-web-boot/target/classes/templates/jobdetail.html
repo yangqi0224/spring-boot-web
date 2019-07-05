@@ -1,0 +1,429 @@
+﻿<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <header th:replace="head :: header"></header>
+    <script type="text/javascript" th:src="@{/style/js/smsm/toemploy.js}"></script>
+</head>
+<body>
+<div id="body">
+    <div th:replace="nav">
+
+    </div>
+    <div id="container">
+        <div class="clearfix">
+            <div class="content_l">
+                <dl class="job_detail">
+                    <dt>
+                        <h1 th:title="${job.jobName}">
+                            <em></em>
+                            <div th:text="${job.company.companyName}+招聘"></div>
+                            <span th:text="${job.jobName}"></span>
+                        </h1>
+
+
+                    </dt>
+                    <dd class="job_request">
+                        <span class="red" th:text="${job.jobSalary}">4k-6k</span>
+                        <span th:text="${job.jobCity}">武汉</span>
+                        <span>经验3-5年 </span>
+                        <span th:text="${job.exceptionEducation}+及以上"> </span>
+                        <span>全职</span><br/>
+                        <span th:text="职位诱惑+'：'+${job.jobTempt}"></span>
+                        <div>发布时间：<span th:text="${job.createTime}"></span></div>
+                    </dd>
+                    <dd class="job_bt">
+                        <input id="jobDesc" th:value="${job.jobDesc}" type="hidden">
+                        <h3 class="description">职位描述</h3>
+                        <p>岗位职责：<span id="jj"></span>
+                        </p>
+                    </dd>
+                    <dd>
+
+                        <a th:if="${session.user}==null" href="#loginPop" title="登录" class="inline btn fr btn_apply">投个简历ba</a>
+                        <span th:if="${session.user}!=null">
+                        <a th:if="${session.user.userType}==personal" href="" title="投简历" class=" btn fr btn_apply" id="toEmploy">来投个简历</a>
+                        </span>
+                    </dd>
+                </dl>
+                <div id="weibolist"></div>
+            </div>
+            <div class="content_r">
+                <dl class="job_company">
+                    <dd>
+                        <ul class="c_feature reset">
+                            <li><span>名称</span> <span th:text="${job.company.companyName}"></span></li>
+                            <li><span>规模</span> <span th:text="${job.company.companySize}"></span></li>
+                            <li>
+                                <span>主页</span>
+                                <a th:href="${job.company.companyHome}" target="_blank" th:title="${job.company.companyHome}" rel="nofollow" th:text="${job.company.companyHome}">http://L99.com</a>
+                            </li>
+                        </ul>
+
+                        <h4>工作地址</h4>
+                        <div th:text="${job.jobAddr}" id="addr"></div>
+                        <div id="smallmap"></div>
+                        <a href="javascript:;" id="mapPreview">查看完整地图</a>
+                    </dd>
+                </dl>
+            </div>
+        </div>
+        <input type="hidden" value="" name="userid" id="userid"/>
+        <input type="hidden" value="" name="type" id="resend_type"/>
+        <input type="hidden" th:value="${job.recruitmentId}" id="recruitmentId"/>
+        <input type="hidden" th:value="${job.jobCity}" id="city">
+        <input type="hidden" value="683" id="companyid"/>
+        <input type="hidden" value="" id="positionLng"/>
+        <input type="hidden" value="" id="positionLat"/>
+
+        <div id="loginToolBar" th:if="${session.user}==null" >
+            <div>
+                <em></em>
+                <img src="/style/images/logo_white.png" width="138" height="45"/>
+                <span class="companycount"></span>
+                <span class="positioncount"></span>
+                <a href="#loginPop" class="bar_login inline" title="登录"><i></i></a>
+                <div class="right">
+                    <a th:href="@{/htmls/register.html}"
+                       onclick="_hmt.push(['_trackEvent', 'button', 'click', 'register'])" class="bar_register"
+                       id="bar_register" target="_blank"><i></i></a>
+                </div>
+                <input type="hidden" id="cc" value="16064"/>
+                <input type="hidden" id="cp" value="96931"/>
+            </div>
+        </div>
+        <div id="tipOverlay"></div>
+        <!-------------------------------------弹窗lightbox  ----------------------------------------->
+        <script type="text/javascript" th:src="@{/style/js/login.js}"></script>
+        <div style="display:none;">
+            <!-- 设置默认投递简历 -->
+
+            <!-- 登录框 -->
+            <div id="loginPop" class="popup" style="height:240px;">
+                <form id="loginForm">
+                    <input type="text" id="email" name="userPhone" tabindex="1" placeholder="请输入登录账号"/>
+                    <input type="password" id="password" name="userPwd" tabindex="2" placeholder="请输入密码"/>
+                    <span class="error" style="display:none;" id="beError"></span>
+                    <label class="fl" for="remember"><input type="checkbox" id="remember" value="" checked="checked"
+                                                            name="autoLogin"/> 记住我</label>
+                    <a href="h/reset.html" class="fr">忘记密码？</a>
+                    <input type="submit" id="submitLogin" value="登 &nbsp; &nbsp; 录"/>
+                </form>
+                <div class="login_right">
+                    <div>还没有拉勾帐号？</div>
+                    <a th:href="@{/htmls/register.html}" class="registor_now">立即注册</a>
+                </div>
+            </div><!--/#loginPop-->
+
+            <!-- 投简历成功前填写基本信息 -->
+            <div id="infoBeforeDeliverResume" class="popup" style="height:300px; overflow:visible;">
+                <div class="f18">为方便所投递企业HR查阅，请确认个人信息</div>
+                <form id="basicInfoForm" method="post">
+                    <table width="100%">
+                        <tr>
+                            <td valign="middle">
+                                <span class="redstar">*</span>
+                            </td>
+                            <td>
+                                <input type="text" name="name" placeholder="姓名"/>
+                            </td>
+                            <td valign="middle">
+                                <span class="redstar">*</span>
+                            </td>
+                            <td>
+                                <input type="hidden" name="degree" value="" id="degree"/>
+                                <input type="button" class="profile_select_190 profile_select_normal" id="select_degree"
+                                       value="最高学历"/>
+                                <div id="box_degree" class="boxUpDown boxUpDown_190 dn"></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="middle">
+                                <span class="redstar">*</span>
+                            </td>
+                            <td>
+                                <input type="hidden" name="workyear" value="" id="workyear"/>
+                                <input type="button" class="profile_select_190 profile_select_normal"
+                                       id="select_workyear" value="工作年限"/>
+                                <div id="box_workyear" class="boxUpDown boxUpDown_190 dn"></div>
+                            </td>
+                            <td valign="middle">
+                                <span class="redstar">*</span>
+                            </td>
+                            <td>
+                                <input type="hidden" name="expectCity" value="" id="expectCity"/>
+                                <input type="button" class="profile_select_190 profile_select_normal"
+                                       id="select_expectCity" value="期望工作城市"/>
+                                <div id="box_expectCity" class="boxUpDown boxUpDown_596 dn"></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="middle">
+                                <span class="redstar">*</span>
+                            </td>
+                            <td>
+                                <input type="text" name="tel" id="tel" placeholder="联系电话"/>
+                            </td>
+                            <td valign="middle">
+                                <span class="redstar">*</span>
+                            </td>
+                            <td>
+                                <input type="text" name="email" id="emailT" placeholder="邮箱地址"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td colspan="3">
+                                <input type="hidden" name="type" value=""/>
+                                <input type="submit" class="btn" value="确认并投递"/>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div><!--/#infoBeforeDeliverResume-->
+
+            <!-- 上传附件简历操作说明-重新上传 -->
+            <div id="fileResumeUpload" class="popup">
+                <table width="100%">
+                    <tr>
+                        <td>
+                            <div class="f18 mb10">请上传标准格式的word简历</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="f16">
+                                操作说明：<br/>
+                                打开需要上传的文件 - 点击文件另存为 - 选择.docx - 保存
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="center">
+                            <a class="inline btn" href="#uploadFile" title="上传附件简历">重新上传</a>
+                        </td>
+                    </tr>
+                </table>
+            </div><!--/#fileResumeUpload-->
+
+            <!-- 上传附件简历操作说明-重新上传 -->
+            <div id="fileResumeUploadSize" class="popup">
+                <table width="100%">
+                    <tr>
+                        <td>
+                            <div class="f18 mb10">上传文件大小超出限制</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="f16">
+                                提示：<br/>
+                                单个附件不能超过10M，请重新选择附件简历！
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="center">
+                            <a class="inline btn" href="#uploadFile" title="上传附件简历">重新上传</a>
+                        </td>
+                    </tr>
+                </table>
+            </div><!--/#deliverResumeConfirm-->
+
+
+            <!-- 投简历成功 -->
+            <div id="deliverResumesSuccess" class="popup" style="width:440px;padding-bottom:10px;">
+                <table width="100%">
+                    <tr class="drawGGJ">
+                        <td align="center">
+                            <p class="font_16 count"></p>
+                            <p class="font_16 share dn">邀请好友成功注册拉勾，可提升每日投递量 &nbsp;&nbsp; <a href="h/share/invite.html"
+                                                                                            target="_blank">邀请好友>></a>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr class="drawQD">
+                        <td align="center"><a href="javascript:top.location.reload();" class="btn_s">确&nbsp;定</a></td>
+                    </tr>
+                    <tr class="weixinQR dn">
+                        <td>
+                            <div class="weixin">
+                                <div class="qr">
+                                    <img src="" width="120" height="120"/>
+
+                                    <div>[仅限本人使用]</div>
+                                </div>
+                                <div class="qr_text">
+                                    想知道HR是否看过你的简历？<br/>
+                                    想在微信中收到面试通知？<br/>
+                                    <span><< 微信扫一扫，一并解决</span>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div><!--/#deliverResumesSuccess-->
+
+
+            <!-- 没有简历请上传 -->
+            <div id="deliverResumesNo" class="popup">
+                <table width="100%">
+                    <tr>
+                        <td align="center"><p class="font_16">你在拉勾还没有简历，请先上传一份</p></td>
+                    </tr>
+                    <tr>
+                        <td align="center">
+                            <form>
+                                <a href="javascript:void(0);" class="btn_addPic">
+                                    <span>选择上传文件</span>
+                                    <input title="支持word、pdf、ppt、txt、wps格式文件，大小不超过10M" size="3" name="newResume"
+                                           id="resumeUpload1"
+                                           class="filePrew" type="file"
+                                           onchange="file_check(this,'h/nearBy/updateMyResume.json','resumeUpload1')"/>
+                                </a>
+                            </form>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="center">支持word、pdf、ppt、txt、wps格式文件，大小不超过10M</td>
+                    </tr>
+                </table>
+            </div><!--/#deliverResumesNo-->
+
+            <!--
+              激活邮箱
+              登录邮箱未验证时，
+               点击上传附件简历、申请职位、订阅职位、发布职位出现该弹窗
+          -->
+            <div id="activePop" class="popup" style="height:240px;">
+                <h4>登录邮箱未验证</h4>
+                <p>请验证你的登录邮箱以使用拉勾网的所有功能！ </p>
+                <p>我们已将验证邮件发送至：<a></a>，请点击邮件内的链接完成验证。</p>
+                <p><a href="javascript:void(0)" id="resend">重新发送验证邮件 </a> | <a href="register.html" target="_blank">
+                    换个邮箱？ </a></p>
+            </div><!--/#activePop-->
+
+            <!--
+               激活邮箱
+               验证邮件发送成功弹窗
+           -->
+            <div id="resend_success" class="popup">
+                <p>我们已将激活邮件发送至：<a></a>，请点击邮件内的链接完成验证。</p>
+            </div><!--/#resend_success-->
+
+            <!--地图弹窗-->
+            <div id="baiduMap" class="popup">
+                <div id="allmap"></div>
+            </div><!--/#baiduMap-->
+        </div>
+        <!------------------------------------- end ----------------------------------------->
+
+        <script>
+            $(function () {
+                $('#weibolist .cookietxte').text('推荐本职位给好友');
+                $(document).bind('cbox_complete', function () {
+                    hbzxJQ("#gaosutapt .pttui a").trigger("click");
+                    hbzxJQ("#mepingpt .pttui a").trigger("click");
+                });
+                $('#cboxOverlay').bind('click', function () {
+                    top.location.reload();
+                });
+                $('#colorbox').on('click', '#cboxClose', function () {
+                    if ($(this).siblings('#cboxLoadedContent').children('div').attr('id') == 'deliverResumesSuccess' || $(this).siblings('#cboxLoadedContent').children('div').attr('id') == 'uploadFileSuccess') {
+                        top.location.reload();
+                    }
+                });
+            })
+        </script>
+
+        <script type="text/javascript"
+                th:src="@{http://api.map.baidu.com/api?v=2.0&ak=3d6a9f4b807441569414b01eecc20959}"></script>
+        <script type="text/javascript">
+            //百度地图API功能
+            var sMap = new BMap.Map("smallmap");
+            sMap.enableScrollWheelZoom(true);
+
+            if ($('#positionLat').val() && $('#positionLng').val()) {
+                var sPoint = new BMap.Point($('#positionLng').val(), $('#positionLat').val());
+                sMap.centerAndZoom(sPoint, 12);
+                sMap.addOverlay(new BMap.Marker(sPoint));              // 将标注添加到地图中
+
+            } else {
+                // 创建地址解析器实例
+                var sMyGeo = new BMap.Geocoder();
+                // 将地址解析结果显示在地图上,并调整地图视野
+                sMyGeo.getPoint($("#addr").text(), function (sPoint) {
+                    if (sPoint) {
+                        sMap.centerAndZoom(sPoint, 16);
+                        sMap.addOverlay(new BMap.Marker(sPoint));
+                    }
+                }, "武汉");
+            }
+
+            /*弹窗大地图*/
+            var map = new BMap.Map("allmap");
+            map.addControl(new BMap.NavigationControl());
+            map.addControl(new BMap.MapTypeControl());
+            map.addControl(new BMap.OverviewMapControl());
+            map.enableScrollWheelZoom(true);
+            // 创建地址解析器实例
+            var gc = new BMap.Geocoder();
+            $(function () {
+                $('#mapPreview').bind('click', function () {
+                    $.colorbox({inline: true, href: "#baiduMap", title: "公司地址"});
+                    var address = $("#addr").text();
+                    var city = $("#city").val();
+                    var lat = $('#positionLat').val();
+                    var lng = $('#positionLng').val();
+                    map.setCurrentCity(city);
+                    map.setZoom(12);
+                    if (lat && lng) {
+                        var p = new BMap.Point(lng, lat);
+                        var marker = new BMap.Marker(p);  // 创建标注
+                        map.addOverlay(marker);              // 将标注添加到地图中
+                        setTimeout(function () {
+                            map.centerAndZoom(p, 15);
+                        }, 1000);
+                        map.setCenter(p);
+                        map.setZoom(15);
+                        var sContent =
+                            "<h4 style='margin:0 0 5px 0;padding:0.2em 0'>" + city + "</h4>" +
+                            "<p style='margin:0;line-height:1.5;font-size:13px;text-indent:2em'>" + address + "</p>" +
+                            "</div>";
+                        var infoWindow = new BMap.InfoWindow(sContent);  // 创建信息窗口对象
+                        //图片加载完毕重绘infowindow
+                        marker.openInfoWindow(infoWindow);
+                    } else {
+                        gc.getPoint(address, function (point) {
+                            if (point) {
+                                var p = new BMap.Point(point.lng, point.lat);
+                                var marker = new BMap.Marker(p);  // 创建标注
+                                map.addOverlay(marker);              // 将标注添加到地图中
+                                setTimeout(function () {
+                                    map.centerAndZoom(p, 15);
+                                }, 1000);
+                                map.setZoom(14);
+                                var sContent =
+                                    "<h4 style='margin:0 0 5px 0;padding:0.2em 0'>" + city + "</h4>" +
+                                    "<p style='margin:0;line-height:1.5;font-size:13px;text-indent:2em'>" + address + "</p>" +
+                                    "</div>";
+                                var infoWindow = new BMap.InfoWindow(sContent);  // 创建信息窗口对象
+                                //图片加载完毕重绘infowindow
+                                marker.openInfoWindow(infoWindow);
+                            }
+                        }, city);
+                    }
+
+
+                });
+
+            });
+        </script>
+        <div class="clear"></div>
+        <a id="backtop" title="回到顶部" rel="nofollow"></a>
+    </div><!-- end #container -->
+</div><!-- end #body -->
+
+<!--  -->
+
+</body>
+</html>
